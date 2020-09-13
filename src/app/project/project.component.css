@@ -1,0 +1,16 @@
+mat-card
+{
+  width: 80%;
+  margin :1rem;
+}
+
+.container{
+  width: auto;
+}
+mat-spinner {
+  margin: auto;
+}
+
+button{
+  margin-right: auto;
+}

@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+    <mat-form-field>
+      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+      <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
+      <mat-error *ngIf="passwordInput.invalid">Your password must contain 8 characters with one uppercase ,lower
+      case and a number</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="FirstName" ngModel type="text" placeholder="Enter First Name" #FirstName="ngModel" required>
+      <mat-error *ngIf="FirstName.invalid">Please enter a valid email.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="LastName" ngModel type="text" placeholder="Enter Last Name" #LastName="ngModel" required>
+      <mat-error *ngIf="LastName.invalid">Please enter a valid email.</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+    <mat-label>Select the Country</mat-label>
+     <mat-select disableRipple ngModel #country="ngModel" name="country" required>
+     <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
+     </mat-select>
+   </mat-form-field>
+   <mat-form-field appearance="fill">
+   <mat-label>Select the Mobile Code</mat-label>
+    <mat-select disableRipple ngModel #phCode="ngModel" name="phoneCode" required>
+    <mat-option *ngFor="let obj of phoneCode" [value]="obj.num">{{obj.code}} - {{obj.num}}</mat-option>
+    </mat-select>
+    </mat-form-field>
+        <mat-form-field>
+      <input type="number"
+      ng-model="number" onKeyPress="if(this.value.length>9) return false;" min="0"
+      name="phoneNumber" ngModel matInput placeholder="PhoneNumber" #phoneInput="ngModel"
+         required>
+    </mat-form-field><br>
+    <button mat-raised-button color="accent" [disabled]="!signupForm.valid" type="submit">Signup</button>
+  </form>
+</mat-card>

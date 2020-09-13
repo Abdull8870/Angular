@@ -1,0 +1,28 @@
+<mat-card *ngIf="isForgetPassword">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onForgetPassword(forgetPassword)" #forgetPassword="ngForm" *ngIf="!isLoading">
+    <mat-form-field>
+      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+      <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="accent"  [disabled]="!forgetPassword.valid" type="submit">RESET</button>
+    <button mat-raised-button color="accent" type="button" (click)="back()">BACK</button>
+  </form>
+</mat-card>
+<mat-card *ngIf="!isForgetPassword">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onRest(ResetForm)" #ResetForm="ngForm" *ngIf="!isLoading">
+    <mat-form-field>
+      <input matInput name="password" ngModel type="password" placeholder="New Pasword" #passInput="ngModel" required>
+      <mat-error *ngIf="passInput.invalid">Please enter a valid password</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="code" ngModel type="text" placeholder="Enter the reset Code" #textInput="ngModel" required>
+      <mat-error *ngIf="textInput.invalid">Please enter a valid email.</mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="accent" type="submit">RESET</button>
+   <button mat-raised-button color="accent" type="button" (click)="back()">BACK</button>
+  </form>
+</mat-card>

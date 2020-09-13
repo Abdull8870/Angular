@@ -1,0 +1,96 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+  <mat-card *ngIf="!isLoading && newBill">
+  <form #Expense="ngForm" (submit)="onSubmit()">
+    <div class="form-group">
+      <label for="exampleInputPassword1">BILL NAME</label>
+      <input type="text" class="form-control" name="billname" placeholder="Enter the bill name" ngModel #bill="ngModel" required>
+    </div>
+    <div class="form-group">
+      <label for="Payer">Who paid</label>
+      <select class="form-control" id="Payer" name="payer" ngModel #payer="ngModel" required>
+        <option *ngFor="let user of currentProject.users" [value]="user">{{user}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="amount">AMOUNT SPENT</label>
+      <input type="number" class="form-control" name="amount"
+       pattern="[0-9]+" placeholder="Enter the amount spent" ngModel #amount="ngModel" required>
+    </div>
+    <span
+      *ngIf="amount.invalid && amount.touched"
+      class="help-block" style="color:red">Kindly enter valid Numbers avoid minus symbols</span>
+      <p>TO WHOM</p>
+    <div class="form-check form-check-inline" *ngFor="let user of currentProject.users">
+      <label class="form-check-label" [for]="user" >
+     <input class="form-check" type="checkbox" [id]="user" value="{{user}}" name="user"
+     ngModel #reciver="ngModel" (change)="onChange($event)" required>
+      {{user}}</label>
+    </div>
+    <span
+      *ngIf="!Expense.valid && Expense.touched"
+      class="help-block">Please enter valid data!</span>
+    <button type="submit" [disabled]="!Expense.valid" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-info" *ngIf="cancel" (click)="onCancel()">cancel</button>
+  </form>
+    </mat-card>
+    <div *ngIf="!newBill && !isLoading">
+      <mat-card>
+        <mat-card-title>
+          Total Bills available in
+          <b style="color:red;">{{currentProject.name}}</b>
+          </mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button mat-button color="primary" (click)="onGenerateBill()">GENERATE EXPENSE</button>
+          <button mat-raised-button mat-button color="accent" (click)="onAddNewBill()">ADD NEW BILL</button>
+          </mat-card-content>
+          </mat-card>
+          <br>
+          <mat-card *ngFor="let data of pageNationBill;let i=index">
+            <mat-card-title>
+              Bill Name: <b style="color:red;">{{data.name}}</b>
+              </mat-card-title>
+                <mat-card-content>
+                  <h4><b style="color:blue;"> Payer: {{data.payer}} </b> </h4>
+                        <ul class="list-group list-group-flush" type="1">
+                          <h4><b style="color:red;">RECEIVERS</b></h4>
+                     <li class="list-group-item" *ngFor="let user of data.to">{{user}}<span class="glyphicon glyphicon-envelope"></span></li>
+                     </ul>
+                   <h4>Amout paid : {{data.amount}}</h4>
+                    </mat-card-content>
+                    <mat-card-actions>
+                <button mat-raised-button mat-button color="warn" (click)="onDeleteBill(data._id)">DELETE</button>
+                <button mat-raised-button mat-button color="primary" (click)="onEdit(i)">EDIT</button>
+           </mat-card-actions>
+     </mat-card>
+     <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"
+       *ngIf="!newBill && !isLoading"></mat-paginator>
+     <br>
+  </div>
+  <ng-template #callAPIDialog>
+    <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()">
+      <div class="form-group">
+        <label for="exampleInputPassword1">BILL NAME</label>
+        <input formControlName="BillName" type="text" class="form-control" name="billname">
+      </div>
+      <div class="form-group">
+        <label for="Payer">Who paid</label>
+        <select class="form-control" id="Payer" name="payer" formControlName="Payer">
+          <option *ngFor="let user of currentProject.users" [value]="user">{{user}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="amount">AMOUNT SPENT</label>
+        <input formControlName="Amount" type="number"  pattern="[0-9]+" class="form-control" name="amount">
+      </div>
+        <p>TO WHOM</p>
+      <div class="form-group form-check form-check-inline" *ngFor="let user of currentProject.users">
+        <label class="form-check-label" [for]="user" >
+        <input  class="form-check" type="checkbox" [id]="user" value="{{user}}" name="user" formControlName="To" (change)="onEditChange($event)">
+        {{user}}</label>
+      </div>
+       <mat-dialog-actions align="end">
+           <button mat-button matDialogClose mat-button color="primary">Cancel</button>
+           <button type="submit" mat-button color="accent" matDialogClose mat-button [disabled]="!editForm.valid">Submit</button>
+       </mat-dialog-actions>
+   </form>
+   </ng-template>

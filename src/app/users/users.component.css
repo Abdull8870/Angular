@@ -1,0 +1,17 @@
+mat-card
+{
+  width: 50%;
+  margin :4px auto;
+}
+
+mat-spinner {
+  margin: auto;
+}
+button
+{
+  margin: 1rem auto;
+}
+
+ng-template{
+  width: auto;
+}

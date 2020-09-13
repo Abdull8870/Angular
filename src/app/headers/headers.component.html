@@ -1,0 +1,43 @@
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">EXPENSE SPLITTER</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a routerLink='/home' routerLinkActive="active">Home</a></li>
+      <li><a routerLink='/project'routerLinkActive="active">PROJECT</a></li>
+      <li><a *ngIf="userIsAuthenticated" routerLinkActive="active" (click)="onUserClick()" style="cursor:pointer;">BILLS</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+          <li *ngIf="!userIsAuthenticated"><a routerLink='/login' routerLinkActive="active">LOGIN</a></li>
+          <li *ngIf="!userIsAuthenticated"><a routerLink='/signup' routerLinkActive="active">SIGNUP</a></li>
+          <li *ngIf="userIsAuthenticated">
+            <button style="margin:1rem;" class="btn btn-danger" type="button" (click)="onLogout()">Logout</button>
+          </li>
+    </ul>
+  </div>
+</nav>
+<ng-template #callAPIDialog>
+  <form [formGroup]="selectProjectForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="project">SELECT THE PROJECT</label>
+      <select class="form-control" id="project" name="project" formControlName="projectName">
+        <option *ngFor="let project of projects;let i=index" [value]="i">{{project}}</option>
+      </select>
+    </div>
+     <mat-dialog-actions align="end">
+         <button mat-button matDialogClose mat-button color="primary" (click)="onClick()">Cancel</button>
+         <button type="submit" mat-button color="accent" matDialogClose mat-button>Submit</button>
+     </mat-dialog-actions>
+ </form>
+ </ng-template>
+ <ng-template #noProject>
+   <h1 mat-dialog-title><strong>You Were Not Part of Any Expense</strong></h1>
+   <div mat-dialog-content>
+   <p></p>
+   </div>
+ <div mat-dialog-actions>
+   <button mat-button matDialogClose mat-button color="accent" (click)="onCreateProject()">CLIK HERE TO CREATE A PROJECT</button>
+ </div>
+  </ng-template>
+<router-outlet></router-outlet>

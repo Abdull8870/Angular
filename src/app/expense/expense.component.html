@@ -1,0 +1,30 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-card *ngIf="!isLoading">
+      <mat-card-title>Expense <br>
+        <button mat-raised-button mat-button color="accent" [routerLink]="['/history',this.id]">HISTORY</button>
+      </mat-card-title>
+        <mat-card-content>
+        <mat-table [dataSource]="finalExpense" class="mat-elevation-z8">
+  <!-- Payer Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> NAME </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+  </ng-container>
+
+  <!-- To Column -->
+  <ng-container matColumnDef="to">
+    <mat-header-cell *matHeaderCellDef> To </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.to}} </mat-cell>
+  </ng-container>
+
+  <!-- Amount Column -->
+  <ng-container matColumnDef="amount">
+    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+  </ng-container>>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+   </mat-table>
+        </mat-card-content>
+    </mat-card>

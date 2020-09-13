@@ -1,0 +1,82 @@
+<div class="container">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-card *ngIf="createProject && !isLoading">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+        <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+          <div formGroupName="userData">
+            <div class="form-group">
+              <label for="projectName">Project Name</label>
+              <input
+                type="text"
+                id="projectName"
+                formControlName="projectName"
+                class="form-control"
+                minlength="1" maxlength="20" size="20">
+              <span
+                *ngIf="!projectForm.get('userData.projectName').valid && projectForm.get('userData.projectName').touched"
+                class="help-block">Enter a valid Project Name
+                </span>
+            </div>
+            <div class="form-group">
+              <label for="projectName">Expense Created By</label>
+              <input
+                type="text"
+                id="createdBy"
+                formControlName="createdBy"
+                class="form-control"
+                minlength="1" maxlength="20" size="20">
+              <span
+                *ngIf="!projectForm.get('userData.createdBy').valid && projectForm.get('userData.createdBy').touched"
+                class="help-block">Enter a valid Name
+                </span>
+            </div>
+          </div>
+          <div formArrayName="users">
+            <h4>Add all the persons invovled in the Expense</h4>
+            <button
+              class="btn btn-default"
+              type="button"
+              (click)="onAddUser()">Add Person</button>
+            <div
+              class="form-group"
+              *ngFor="let user of projectForm.get('users').controls; let i = index">
+              <input type="text" placeholder="Enter the Email id of the user" class="form-control" [formControlName]="i">
+              <button class="btn btn-danger" type="button" (click)="onDelete(i)">DELETE</button>
+            </div>
+          </div>
+          <br>
+          <span
+            *ngIf="!projectForm.valid && projectForm.touched"
+            class="help-block">Please enter valid data!</span>
+          <button class="btn btn-primary" type="submit" [disabled]="!projectForm.valid || !submit">Submit</button>
+          <button class="btn btn-info" type="button" (click)="onCancel()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</mat-card>
+<div *ngIf="!createProject && !isLoading">
+<mat-card class="example-card" *ngFor="let project of PagenationProject;let i=index">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title style="color:#FF0000;">PROJECT NAME : {{project.name}}</mat-card-title>
+    <mat-card-subtitle><strong>TOTAL PERSONS INVOLVED IN THE PROJECT</strong></mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ol>
+      <li *ngFor="let users of project.users; let i=index">{{users}}</li>
+    </ol>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button mat-button color="primary" (click)="CreateNew()">CREATE ANOTHER PROJECT</button>
+    <button mat-raised-button mat-button color="accent" [routerLink]="['/Users',project._id]">ADD BILL DETAILS</button>
+    <button *ngIf="userId===project.creator" mat-raised-button mat-button color="warn" (click)="onDeleteProject(project._id,i)">DELETE PROJECT</button>
+    <button mat-raised-button mat-button color="accent" [routerLink]="['/history',project._id]">HISTORY</button>
+  </mat-card-actions>
+</mat-card>
+</div>
+<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"
+  *ngIf="!createProject && !isLoading"></mat-paginator>
+</div>
